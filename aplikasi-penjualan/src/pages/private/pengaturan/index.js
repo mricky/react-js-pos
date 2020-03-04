@@ -29,7 +29,7 @@ function Pengaturan(props) {
                 indicatorColor="primary"
                 textColor="primary"
                 onChange={handleChangeTab}
-            >
+                  >
                 <Tab label="Pengguna" value="/pengaturan/pengguna" />
                 <Tab label="Toko" value="/pengaturan/toko" />
             </Tabs>

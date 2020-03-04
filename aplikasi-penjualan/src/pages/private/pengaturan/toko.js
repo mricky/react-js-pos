@@ -49,7 +49,7 @@ function Toko() {
 
     useEffect(() => {
 
-        if (snapshot) {
+        if (snapshot && snapshot.exists) {
           
             setForm(snapshot.data());
         } else {

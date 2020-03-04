@@ -49,7 +49,7 @@ function Toko() {
     useEffect(() => {
 
         if (snapshot) {
-
+            console.log(snapshot.data());
             setForm(snapshot.data());
         }
 
@@ -125,7 +125,7 @@ function Toko() {
         return <AppPageLoading />
     }
 
-    return <div className={classes.pengaturanToko}>
+    return <div className={classes.pengaturanToko}>  
         <form onSubmit={handleSubmit} noValidate>
             <TextField
                 id="nama"
@@ -150,7 +150,7 @@ function Toko() {
                 multiline
                 rowsMax={3}
                 fullWidth
-                value={form.alamat}
+                //value={form.alamat}
                 onChange={handleChange}
                 error={error.alamat ? true : false}
                 helperText={error.alamat}

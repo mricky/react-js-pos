@@ -30,6 +30,7 @@ function Toko() {
     const tokoDoc = firestore.doc(`toko/${user.uid}`)
     const [snapshot, loading] = useDocument(tokoDoc);
     const { enqueueSnackbar } = useSnackbar();
+
     const [form, setForm] = useState({
         nama: '',
         alamat: '',
@@ -49,10 +50,17 @@ function Toko() {
     useEffect(() => {
 
         if (snapshot) {
-
+          
             setForm(snapshot.data());
+        } else {
+            setForm({
+                nama: '',
+                alamat: '',
+                telepon: '',
+                website: ''
+            })
         }
-
+        //console.log(form);
 
     }, [snapshot])
 
@@ -124,7 +132,6 @@ function Toko() {
     if (loading) {
         return <AppPageLoading />
     }
-
     return <div className={classes.pengaturanToko}>
         <form onSubmit={handleSubmit} noValidate>
             <TextField
@@ -204,6 +211,7 @@ function Toko() {
             message="Terdapat perubahan yang belum disimpan, apakah anda yakin ingin meninggalkan halaman ini?"
         />
     </div>
+    
 }
 
 export default Toko;

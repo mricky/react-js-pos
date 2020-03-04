@@ -9,7 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 // import styles
-import useStyles from './styles'; 
+import useStyles from './styles';
 
 // react router dom
 import { Link, Redirect } from 'react-router-dom';
@@ -22,18 +22,19 @@ import { useFirebase } from '../../components/FirebaseProvider';
 // app components
 import AppLoading from '../../components/AppLoading';
 
-function Login(props) {
-    const { location } = props;
+function Registrasi() {
     const classes = useStyles();
 
     const [form, setForm] = useState({
         email: '',
-        password: ''
+        password: '',
+        ulangi_password: ''
     });
 
     const [error, setError] = useState({
         email: '',
-        password: ''
+        password: '',
+        ulangi_password: ''
     })
     const [isSubmitting, setSubmitting] = useState(false);
 
@@ -65,6 +66,11 @@ function Login(props) {
             newError.password = 'Password wajib diisi';
         }
 
+        if (!form.ulangi_password) {
+            newError.ulangi_password = 'Ulangi Password wajib diisi';
+        } else if (form.ulangi_password !== form.password) {
+            newError.ulangi_password = 'Ulangi Password tidak sama dengan Password';
+        }
 
         return newError;
     }
@@ -79,24 +85,24 @@ function Login(props) {
         } else {
             try {
                 setSubmitting(true);
-                await auth.signInWithEmailAndPassword(form.email, form.password)
+                await auth.createUserWithEmailAndPassword(form.email, form.password)
             } catch (e) {
 
                 const newError = {};
 
                 switch (e.code) {
 
-                    case 'auth/user-not-found':
-                        newError.email = 'Email tidak terdaftar';
+                    case 'auth/email-already-in-use':
+                        newError.email = 'Email sudah terdaftar';
                         break;
                     case 'auth/invalid-email':
                         newError.email = 'Email tidak valid';
                         break;
-                    case 'auth/wrong-password':
-                        newError.password = 'Password salah';
+                    case 'auth/weak-password':
+                        newError.password = 'Password lemah';
                         break;
-                    case 'auth/user-disabled':
-                        newError.email = 'Pengguna di blokir';
+                    case 'auth/operation-not-allowed':
+                        newError.email = "Metode email dan password tidak didukung"
                         break;
                     default:
                         newError.email = 'Terjadi kesalahan silahkan coba lagi';
@@ -116,17 +122,17 @@ function Login(props) {
         return <AppLoading />
     }
     if (user) {
-        const redirecTo = location.state && location.state.from && location.state.from.pathname ? location.state.from.pathname : '/';
-        return <Redirect to={redirecTo} />
+
+        return <Redirect to="/" />
     }
 
-
+    console.log(user)
     return <Container maxWidth="xs">
         <Paper className={classes.paper}>
             <Typography
                 variant="h5"
                 component="h1"
-                className={classes.title}>Login</Typography>
+                className={classes.title}>Buat Akun Baru</Typography>
 
             <form onSubmit={handleSubmit} noValidate>
                 <TextField
@@ -157,7 +163,20 @@ function Login(props) {
                     error={error.password ? true : false}
                     disabled={isSubmitting}
                 />
-
+                <TextField
+                    id="ulangi_password"
+                    type="password"
+                    name="ulangi_password"
+                    margin="normal"
+                    label="Ulangi Password"
+                    fullWidth
+                    required
+                    value={form.ulangi_password}
+                    onChange={handleChange}
+                    helperText={error.ulangi_password}
+                    error={error.ulangi_password ? true : false}
+                    disabled={isSubmitting}
+                />
 
                 <Grid container className={classes.buttons}>
                     <Grid item xs>
@@ -165,7 +184,7 @@ function Login(props) {
                             disabled={isSubmitting}
                             type="submit" color="primary" variant="contained"
                             size="large"
-                        >Login</Button>
+                        >Daftar</Button>
                     </Grid>
                     <Grid item>
                         <Button
@@ -173,16 +192,10 @@ function Login(props) {
                             component={Link}
                             variant="contained"
                             size="large"
-                            to="/registrasi"
-                        >Daftar</Button>
+                            to="/login"
+                        >Login</Button>
                     </Grid>
                 </Grid>
-                <div className={classes.forgotPassword}>
-                    <Typography component={Link} to="/lupa-password" >
-                        Lupa Password?
-                </Typography>
-                </div>
-
 
 
             </form>
@@ -191,4 +204,4 @@ function Login(props) {
     </Container>
 }
 
-export default Login;
+export default Registrasi;

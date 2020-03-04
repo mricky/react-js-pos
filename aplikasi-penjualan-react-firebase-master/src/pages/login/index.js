@@ -9,7 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 // import styles
-import useStyles from './styles'; 
+import useStyles from './styles';
 
 // react router dom
 import { Link, Redirect } from 'react-router-dom';

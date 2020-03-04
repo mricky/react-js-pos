@@ -124,7 +124,7 @@ function Toko() {
     if (loading) {
         return <AppPageLoading />
     }
-    console.log(form);
+
     return <div className={classes.pengaturanToko}>
         <form onSubmit={handleSubmit} noValidate>
             <TextField

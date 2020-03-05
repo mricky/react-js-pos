@@ -139,7 +139,7 @@ function Toko() {
                 name="nama"
                 label="Nama Toko"
                 margin="normal"
-                //value={form.nama}
+                value={form.nama}
                 required
                 fullWidth
                 onChange={handleChange}
